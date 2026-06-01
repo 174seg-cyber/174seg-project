@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Заказы - Менеджер</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #7FFF00;
+            padding: 20px;
+        }
+        .header {
+            background-color: #FFFFFF;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        .header a {
+            color: #0066cc;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .container {
+            background-color: #FFFFFF;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        h1 { margin-bottom: 20px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #7FFF00;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/manager/products">← Назад к товарам</a>
+        <a href="/logout">🚪 Выйти</a>
+    </div>
+    <div class="container">
+        <h1>📦 Список заказов</h1>
+        <p style="color: #666; margin-bottom: 20px;">Здесь будет отображаться список заказов клиентов</p>
+        <table>
+            <thead>
+                <tr><th>ID заказа</th><th>Клиент</th><th>Дата</th><th>Сумма</th><th>Статус</th></tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="5" style="text-align: center;">Нет заказов</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

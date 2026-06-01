@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавить товар - Одежда</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #7FFF00;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: #FFFFFF;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        button {
+            background-color: #00FA9A;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #00E090;
+        }
+        
+        .cancel {
+            background-color: #ccc;
+            margin-left: 10px;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #333;
+        }
+        
+        .cancel:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Добавить товар (Одежда)</h1>
+        <form method="POST">
+            <label>Название:</label>
+            <input type="text" name="name" required>
+            
+            <label>Бренд:</label>
+            <input type="text" name="brand" required>
+            
+            <label>Размер (S, M, L, XL, 32/32, 40 и т.д.):</label>
+            <input type="text" name="size" required>
+            
+            <label>Цвет:</label>
+            <input type="text" name="color" required>
+            
+            <label>Цена (₽):</label>
+            <input type="number" step="0.01" name="price" required>
+            
+            <label>Количество:</label>
+            <input type="number" name="stock" required>
+            
+            <label>Категория:</label>
+            <select name="category">
+                <option value="футболки">Футболки</option>
+                <option value="джинсы">Джинсы</option>
+                <option value="платья">Платья</option>
+                <option value="куртки">Куртки</option>
+                <option value="свитеры">Свитеры</option>
+                <option value="шорты">Шорты</option>
+                <option value="рубашки">Рубашки</option>
+                <option value="пальто">Пальто</option>
+                <option value="лонгсливы">Лонгсливы</option>
+                <option value="юбки">Юбки</option>
+            </select>
+            
+            <label>Материал:</label>
+            <select name="material">
+                <option value="хлопок">Хлопок</option>
+                <option value="деним">Деним</option>
+                <option value="шерсть">Шерсть</option>
+                <option value="кожа">Кожа</option>
+                <option value="полиэстер">Полиэстер</option>
+                <option value="вискоза">Вискоза</option>
+            </select>
+            
+            <label>Сезон:</label>
+            <select name="season">
+                <option value="лето">Лето</option>
+                <option value="зима">Зима</option>
+                <option value="весна">Весна</option>
+                <option value="осень">Осень</option>
+                <option value="всесезон">Всесезон</option>
+            </select>
+            
+            <button type="submit">💾 Сохранить</button>
+            <a href="/admin/products" class="cancel">Отмена</a>
+        </form>
+    </div>
+</body>
+</html>

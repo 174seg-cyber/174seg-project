@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #7FFF00; /* Дополнительный фон */
+            padding: 20px;
+        }
+        
+        .header {
+            background-color: #FFFFFF; /* Основной фон */
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header a {
+            color: #0066cc;
+            text-decoration: none;
+            margin-left: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        .container {
+            background-color: #FFFFFF; /* Основной фон */
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        th {
+            background-color: #7FFF00; /* Дополнительный фон для заголовков */
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .logo-small {
+            height: 40px;
+            vertical-align: middle;
+        }
+        
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #666;
+            font-family: 'Times New Roman', Times, serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span style="font-weight: bold;">{{ title }}</span>
+        <a href="/login">Войти</a>
+    </div>
+    
+    <div class="container">
+        <h1>Каталог обуви</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Бренд</th>
+                    <th>Размер</th>
+                    <th>Цвет</th>
+                    <th>Цена</th>
+                    <th>Наличие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.brand }}</td>
+                    <td>{{ p.size }}</td>
+                    <td>{{ p.color }}</td>
+                    <td>{{ p.price }} ₽</td>
+                    <td>{{ p.stock }} шт.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="footer">
+        <p>ООО «Обувь» - качественная обувь для всей семьи</p>
+    </div>
+</body>
+</html>

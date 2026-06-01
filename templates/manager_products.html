@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Менеджер - Товары (Одежда)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #7FFF00;
+            padding: 20px;
+        }
+        
+        .header {
+            background-color: #FFFFFF;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header a {
+            color: #0066cc;
+            text-decoration: none;
+            margin-left: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        .container {
+            background-color: #FFFFFF;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        .filters {
+            background-color: #7FFF00;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .filters input, .filters select, .filters button {
+            font-family: 'Times New Roman', Times, serif;
+            padding: 8px;
+            margin-right: 10px;
+        }
+        
+        .filters button {
+            background-color: #00FA9A;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        th {
+            background-color: #7FFF00;
+            font-weight: bold;
+        }
+        
+        .discount-high {
+            background-color: #2E8B57 !important;
+            color: white;
+        }
+        
+        .price {
+            font-weight: bold;
+        }
+        
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 12px;
+        }
+        
+        .discount-badge {
+            background-color: #ff4444;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .flash {
+            background-color: #00FA9A;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .size-badge {
+            background-color: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span style="font-weight: bold;">👔 Менеджер: {{ session.full_name }}</span>
+        <a href="/manager/orders">📦 Заказы</a>
+        <a href="/logout">🚪 Выйти</a>
+    </div>
+    
+    <div class="container">
+        <h1>Управление товарами (Одежда)</h1>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="flash">{{ msg }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="filters">
+            <form method="GET">
+                <input type="text" name="search" placeholder="Поиск по названию/бренду..." value="{{ request.args.get('search', '') }}">
+                <select name="category">
+                    <option value="">Все категории</option>
+                    {% for c in categories %}
+                    <option value="{{ c[0] }}">{{ c[0] }}</option>
+                    {% endfor %}
+                </select>
+                <select name="season">
+                    <option value="">Все сезоны</option>
+                    {% for s in seasons %}
+                    <option value="{{ s[0] }}">{{ s[0] }}</option>
+                    {% endfor %}
+                </select>
+                <select name="sort">
+                    <option value="">По названию</option>
+                    <option value="price_asc">Цена (возр.)</option>
+                    <option value="price_desc">Цена (убыв.)</option>
+                </select>
+                <button type="submit">🔍 Применить</button>
+            </form>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Бренд</th>
+                    <th>Размер</th>
+                    <th>Цвет</th>
+                    <th>Цена</th>
+                    <th>Скидка</th>
+                    <th>Категория</th>
+                    <th>Сезон</th>
+                    <th>Наличие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                {% set discount = 0 %}
+                {% if p.price > 10000 %}
+                    {% set discount = 20 %}
+                {% elif p.price > 5000 %}
+                    {% set discount = 10 %}
+                {% elif p.price > 3000 %}
+                    {% set discount = 5 %}
+                {% endif %}
+                
+                <tr {% if discount > 15 %}class="discount-high"{% endif %}>
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.brand }}</td>
+                    <td><span class="size-badge">{{ p.size }}</span></td>
+                    <td>{{ p.color }}</td>
+                    <td>
+                        <span class="price">{{ p.price }} ₽</span>
+                        {% if discount > 0 %}
+                            <span class="discount-badge">-{{ discount }}%</span>
+                        {% endif %}
+                    </td>
+                    <td>{% if discount > 0 %}{{ discount }}%{% else %}-{% endif %}</td>
+                    <td>{{ p.category }}</td>
+                    <td>{{ p.season }}</td>
+                    <td>{{ p.stock }} шт.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

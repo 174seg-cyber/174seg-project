@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Вход - ООО Одежда</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #7FFF00;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-box {
+            background-color: #FFFFFF;
+            padding: 40px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+        h2 { margin-bottom: 20px; color: #333; }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 14px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #00FA9A;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #00E090;
+        }
+        .guest {
+            margin-top: 20px;
+        }
+        .guest a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .flash {
+            background-color: #ff4444;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 20px;
+        }
+        hr { margin: 20px 0; border-color: #7FFF00; }
+        .register-link {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #7FFF00;
+        }
+        .register-link a {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>ООО «Одежда»</h2>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="flash">{{ msg }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" action="/login">
+            <input type="text" name="username" placeholder="Логин" required>
+            <input type="password" name="password" placeholder="Пароль" required>
+            <button type="submit">Войти</button>
+        </form>
+        
+        <div class="guest">
+            <a href="/guest">Продолжить как гость</a>
+        </div>
+        
+        <div class="register-link">
+            <a href="/register">🔑 Нет аккаунта? Зарегистрироваться</a>
+        </div>
+        
+        <hr>
+        
+        <div class="info">
+            <b>Тестовые данные:</b><br>
+            admin / 123 | manager / 123 | client / 123
+        </div>
+    </div>
+</body>
+</html>
