@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Редактировать товар</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #7FFF00;
+            padding: 20px;
+        }
+        .container {
+            background-color: #FFFFFF;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 8px;
+        }
+        h1 { text-align: center; margin-bottom: 20px; }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        button {
+            background-color: #00FA9A;
+            color: #333;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .cancel {
+            background-color: #ccc;
+            text-align: center;
+            display: block;
+            padding: 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            color: #333;
+        }
+        .info {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✏️ Редактировать товар</h1>
+        <form method="POST">
+            <label>Название:</label>
+            <input type="text" name="name" value="{{ product.name }}" required>
+            
+            <label>Бренд:</label>
+            <input type="text" name="brand" value="{{ product.brand }}" required>
+            
+            <label>Размер:</label>
+            <input type="text" name="size" value="{{ product.size }}" required>
+            
+            <label>Цвет:</label>
+            <input type="text" name="color" value="{{ product.color }}" required>
+            
+            <label>Цена (₽):</label>
+            <input type="number" step="0.01" name="price" value="{{ product.price }}" required>
+            
+            <label>Количество:</label>
+            <input type="number" name="stock" value="{{ product.stock }}" required>
+            
+            <label>Категория:</label>
+            <select name="category">
+                <option value="футболки" {% if product.category == 'футболки' %}selected{% endif %}>Футболки</option>
+                <option value="джинсы" {% if product.category == 'джинсы' %}selected{% endif %}>Джинсы</option>
+                <option value="платья" {% if product.category == 'платья' %}selected{% endif %}>Платья</option>
+                <option value="куртки" {% if product.category == 'куртки' %}selected{% endif %}>Куртки</option>
+                <option value="свитеры" {% if product.category == 'свитеры' %}selected{% endif %}>Свитеры</option>
+                <option value="шорты" {% if product.category == 'шорты' %}selected{% endif %}>Шорты</option>
+                <option value="рубашки" {% if product.category == 'рубашки' %}selected{% endif %}>Рубашки</option>
+                <option value="пальто" {% if product.category == 'пальто' %}selected{% endif %}>Пальто</option>
+            </select>
+            
+            <label>Материал:</label>
+            <select name="material">
+                <option value="хлопок" {% if product.material == 'хлопок' %}selected{% endif %}>Хлопок</option>
+                <option value="деним" {% if product.material == 'деним' %}selected{% endif %}>Деним</option>
+                <option value="шерсть" {% if product.material == 'шерсть' %}selected{% endif %}>Шерсть</option>
+                <option value="кожа" {% if product.material == 'кожа' %}selected{% endif %}>Кожа</option>
+                <option value="полиэстер" {% if product.material == 'полиэстер' %}selected{% endif %}>Полиэстер</option>
+            </select>
+            
+            <label>Сезон:</label>
+            <select name="season">
+                <option value="лето" {% if product.season == 'лето' %}selected{% endif %}>Лето</option>
+                <option value="зима" {% if product.season == 'зима' %}selected{% endif %}>Зима</option>
+                <option value="весна" {% if product.season == 'весна' %}selected{% endif %}>Весна</option>
+                <option value="осень" {% if product.season == 'осень' %}selected{% endif %}>Осень</option>
+                <option value="всесезон" {% if product.season == 'всесезон' %}selected{% endif %}>Всесезон</option>
+            </select>
+            
+            <button type="submit">💾 Сохранить изменения</button>
+            <a href="/admin/products" class="cancel">❌ Отмена</a>
+        </form>
+        <div class="info">ID товара: {{ product.id }}</div>
+    </div>
+</body>
+</html>

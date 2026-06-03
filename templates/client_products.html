@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Клиент - Каталог одежды</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #7FFF00;
+            padding: 20px;
+        }
+        .header {
+            background-color: #FFFFFF;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header a {
+            color: #0066cc;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .logout-btn {
+            background-color: #ff4444;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .logout-btn:hover {
+            background-color: #cc0000;
+        }
+        .container {
+            background-color: #FFFFFF;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        h1 { margin-bottom: 20px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #7FFF00;
+            font-weight: bold;
+        }
+        /* Подсветка строки при наведении */
+        tbody tr:hover {
+            background-color: #00FA9A !important;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .discount-high {
+            background-color: #2E8B57 !important;
+            color: white;
+        }
+        .discount-high:hover {
+            background-color: #3CA06A !important;
+        }
+        .discount-badge {
+            background-color: #ff4444;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .buy-btn {
+            background-color: #00FA9A;
+            color: #333;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .buy-btn:hover {
+            background-color: #00E090;
+        }
+        .selected-row {
+            background-color: #00FA9A !important;
+        }
+        .checkbox-col {
+            width: 30px;
+            text-align: center;
+        }
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .action-bar {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #7FFF00;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .selected-count {
+            font-weight: bold;
+        }
+        .order-btn {
+            background-color: #00FA9A;
+            color: #333;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .order-btn:hover {
+            background-color: #00E090;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .user-name {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span style="font-weight: bold;">👤 КЛИЕНТ: {{ session.full_name }}</span>
+        <div class="user-info">
+            <a href="/logout" class="logout-btn">🚪 Выйти</a>
+        </div>
+    </div>
+    <div class="container">
+        <h1>👕 Каталог одежды</h1>
+        
+        <form method="POST" id="orderForm" action="/client/add-to-cart">
+            <table id="productsTable">
+                <thead>
+                    <tr>
+                        <th class="checkbox-col">✓</th>
+                        <th>Название</th>
+                        <th>Бренд</th>
+                        <th>Размер</th>
+                        <th>Цвет</th>
+                        <th>Цена</th>
+                        <th>Скидка</th>
+                        <th>Наличие</th>
+                        <th>Количество</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in products %}
+                    {% set discount = 20 if p.price > 10000 else (10 if p.price > 5000 else 0) %}
+                    <tr data-price="{{ p.price }}" data-name="{{ p.name }}" {% if discount > 15 %}class="discount-high"{% endif %}>
+                        <td class="checkbox-col">
+                            <input type="checkbox" name="product_{{ p.id }}" value="{{ p.id }}" class="product-checkbox" 
+                                   onclick="highlightRow(this)">
+                        </td>
+                        <td>{{ p.name }}</td>
+                        <td>{{ p.brand }}</td>
+                        <td>{{ p.size }}</td>
+                        <td>{{ p.color }}</td>
+                        <td class="price-cell">{{ p.price }} ₽
+                            {% if discount > 0 %}
+                                <span class="discount-badge">-{{ discount }}%</span>
+                            {% endif %}
+                        </td>
+                        <td>{% if discount > 0 %}{{ discount }}%{% else %}-{% endif %}</td>
+                        <td>{{ p.stock }} шт.</td>
+                        <td>
+                            <input type="number" name="qty_{{ p.id }}" min="1" max="{{ p.stock }}" value="1" 
+                                   style="width: 60px; padding: 5px;" class="qty-input" disabled>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="action-bar">
+                <div class="selected-count">
+                    📦 Выбрано товаров: <span id="selectedCount">0</span>
+                </div>
+                <button type="submit" class="order-btn">🛒 Оформить заказ</button>
+            </div>
+        </form>
+    </div>
+    <div class="footer">
+        ООО «Одежда» - качественная одежда для всей семьи
+    </div>
+
+    <script>
+        // Подсветка выбранной строки
+        function highlightRow(checkbox) {
+            const row = checkbox.closest('tr');
+            const qtyInput = row.querySelector('.qty-input');
+            
+            if (checkbox.checked) {
+                row.style.backgroundColor = '#00FA9A';
+                qtyInput.disabled = false;
+            } else {
+                row.style.backgroundColor = '';
+                qtyInput.disabled = true;
+                qtyInput.value = 1;
+            }
+            
+            updateSelectedCount();
+        }
+        
+        function updateSelectedCount() {
+            const checkboxes = document.querySelectorAll('.product-checkbox');
+            let count = 0;
+            checkboxes.forEach(cb => {
+                if (cb.checked) count++;
+            });
+            document.getElementById('selectedCount').innerText = count;
+        }
+        
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+            if (checkboxes.length === 0) {
+                e.preventDefault();
+                alert('Пожалуйста, выберите хотя бы один товар для заказа');
+                return false;
+            }
+            
+            let hasError = false;
+            checkboxes.forEach(cb => {
+                const row = cb.closest('tr');
+                const qtyInput = row.querySelector('.qty-input');
+                const maxStock = parseInt(row.cells[7].innerText);
+                const qty = parseInt(qtyInput.value);
+                
+                if (qty < 1 || isNaN(qty)) {
+                    alert('Количество должно быть больше 0');
+                    hasError = true;
+                }
+                if (qty > maxStock) {
+                    alert(`Товара "${row.cells[1].innerText}" в наличии только ${maxStock} шт.`);
+                    hasError = true;
+                }
+            });
+            
+            if (hasError) {
+                e.preventDefault();
+                return false;
+            }
+            
+            return true;
+        });
+        
+        document.querySelectorAll('.qty-input').forEach(input => {
+            input.disabled = true;
+        });
+    </script>
+</body>
+</html>
