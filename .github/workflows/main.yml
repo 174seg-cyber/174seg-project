@@ -1,0 +1,32 @@
+name: CI/CD для 174seg-проекта
+
+# ✅ КЛЮЧЕВОЕ: Указываем когда запускать
+on:
+  push:
+    branches: [ main ]      # Когда пушим в main
+  pull_request:
+    branches: [ main ]      # Когда создают Pull Request
+  workflow_dispatch:        # Чтобы можно было запустить вручную из интерфейса
+
+# Что будем делать
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Клонируем репозиторий
+      uses: actions/checkout@v4
+    
+    - name: 🐍 Устанавливаем Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: 📦 Устанавливаем зависимости
+      run: |
+        python -m pip install --upgrade pip
+        pip install flask
+    
+    - name: 🔍 Проверяем, что приложение загружается
+      run: |
+        python -c "import app; print('✅ Flask приложение загружено!')"
